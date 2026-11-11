@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สไลด์นำเสนอ: การบริหารจัดการภัยพิบัติด้วยเทคโนโลยีดิจิทัล</title>
+    <!-- Google Fonts: Prompt & Sarabun -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5A00',
+                            orangeLight: '#FFF2EB',
+                            orangeHover: '#E04E00',
+                            blueDark: '#0A192F',
+                            blueNavy: '#0F2C59',
+                            bluePrimary: '#1E40AF',
+                            blueAccent: '#2563EB',
+                            blueLight: '#EFF6FF',
+                            slateBg: '#0B132B'
+                        }
+                    },
+                    fontFamily: {
+                        prompt: ['Prompt', 'sans-serif'],
+                        sarabun: ['Sarabun', 'sans-serif']
+                    },
+                    aspectRatio: {
+                        '16/9': '16 / 9',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #0B132B;
+            color: #1E293B;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-heading {
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .slide-canvas {
+            aspect-ratio: 16 / 9;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (max-width: 1024px) {
+            .slide-canvas {
+                aspect-ratio: auto;
+                min-height: 600px;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 6mm;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+                color: #1E293B !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            main {
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+
+            #slides-viewport {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            /* Make ALL slides visible in print / PDF export, 1 slide per page */
+            .slide-element {
+                display: flex !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                margin: 0 auto 0 auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 95vh !important;
+                min-height: 95vh !important;
+                box-shadow: none !important;
+                border: 1px solid #CBD5E1 !important;
+                border-radius: 16px !important;
+                overflow: hidden !important;
+            }
+
+            .slide-element.hidden {
+                display: flex !important;
+            }
+
+            .slide-element:last-of-type {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ======================================================== */
+        /* FULLSCREEN PRESENTATION STYLING (True 100% Screen View) */
+        /* ไม่มีแถบควบคุมด้านบน แสดงเนื้อหาเต็มจอสวยงามไร้รอยต่อ       */
+        /* ======================================================== */
+        :fullscreen,
+        :-webkit-full-screen,
+        body.is-fullscreen {
+            background-color: #020617 !important;
+            overflow: hidden !important;
+        }
+
+        :fullscreen header,
+        :-webkit-full-screen header,
+        body.is-fullscreen header {
+            display: none !important;
+        }
+
+        :fullscreen footer,
+        :-webkit-full-screen footer,
+        body.is-fullscreen footer {
+            display: none !important;
+        }
+
+        :fullscreen #speaker-notes-panel,
+        :-webkit-full-screen #speaker-notes-panel,
+        body.is-fullscreen #speaker-notes-panel {
+            display: none !important;
+        }
+
+        :fullscreen main,
+        :-webkit-full-screen main,
+        body.is-fullscreen main {
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100vw !important;
+            max-height: 100vh !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+            background: #020617 !important;
+        }
+
+        :fullscreen #slides-viewport,
+        :-webkit-full-screen #slides-viewport,
+        body.is-fullscreen #slides-viewport {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100vw !important;
+            max-height: 100vh !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+            background: #020617 !important;
+        }
+
+        :fullscreen .slide-element,
+        :-webkit-full-screen .slide-element,
+        body.is-fullscreen .slide-element {
+            margin: auto !important;
+            flex-shrink: 0 !important;
+            transform-origin: center center !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Floating Fullscreen Navigation Controls (Bottom-Right, Auto-hide, Nothing at Top) */
+        .fullscreen-hud {
+            display: none;
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(71, 85, 105, 0.7);
+            border-radius: 9999px;
+            padding: 0.35rem 0.85rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .fullscreen-hud:hover {
+            opacity: 1 !important;
+        }
+
+        :fullscreen .fullscreen-hud,
+        :-webkit-full-screen .fullscreen-hud,
+        body.is-fullscreen .fullscreen-hud {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+
+        /* Side Navigation Click Zones in Fullscreen */
+        .fs-nav-zone {
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 7%;
+            z-index: 9990;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease, background 0.2s ease;
+        }
+
+        .fs-nav-zone-left {
+            left: 0;
+        }
+
+        .fs-nav-zone-right {
+            right: 0;
+        }
+
+        .fs-nav-zone:hover {
+            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        :fullscreen .fs-nav-zone,
+        :-webkit-full-screen .fs-nav-zone,
+        body.is-fullscreen .fs-nav-zone {
+            display: flex !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 select-none">
+
+    <!-- Fullscreen Left/Right Click & Hover Navigation Zones (No controls at top) -->
+    <div id="fs-zone-prev" class="fs-nav-zone fs-nav-zone-left no-print" onclick="prevSlide()" title="สไลด์ก่อนหน้า (Arrow Left)">
+        <span class="text-white/40 hover:text-white text-5xl select-none font-mono transition-transform hover:scale-125">‹</span>
+    </div>
+    <div id="fs-zone-next" class="fs-nav-zone fs-nav-zone-right no-print" onclick="nextSlide()" title="สไลด์ถัดไป (Arrow Right / Space)">
+        <span class="text-white/40 hover:text-white text-5xl select-none font-mono transition-transform hover:scale-125">›</span>
+    </div>
+
+    <!-- Fullscreen Minimal Floating HUD (Bottom-Right, Auto-hides after 2.5s, Completely out of the way) -->
+    <div id="fullscreen-hud" class="fullscreen-hud no-print font-prompt text-xs">
+        <button onclick="prevSlide()" class="p-1.5 rounded-full hover:bg-white/10 text-slate-300 hover:text-white transition" title="สไลด์ก่อนหน้า (⬅️)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <span class="text-slate-200 font-mono text-[11px] px-1.5 font-bold">
+            <span id="fs-slide-num">1</span> / <span id="fs-total-num">12</span>
+        </span>
+        <button onclick="nextSlide()" class="p-1.5 rounded-full hover:bg-white/10 text-slate-300 hover:text-white transition" title="สไลด์ถัดไป (➡️)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <span class="w-[1px] h-3.5 bg-slate-700 mx-0.5"></span>
+        <button onclick="changeSlideScale(-0.05)" class="px-1.5 py-0.5 rounded hover:bg-white/10 text-slate-300 hover:text-white font-mono text-[10.5px]" title="ย่อขนาดเนื้อหาและตัวอักษร (คีย์ -)">A-</button>
+        <button onclick="changeSlideScale(0.05)" class="px-1.5 py-0.5 rounded hover:bg-white/10 text-slate-300 hover:text-white font-mono text-[10.5px]" title="ขยายขนาดเนื้อหาและตัวอักษร (คีย์ +)">A+</button>
+        <span class="w-[1px] h-3.5 bg-slate-700 mx-0.5"></span>
+        <button onclick="toggleFullscreen()" class="px-2.5 py-0.5 rounded-full hover:bg-red-500/20 text-slate-400 hover:text-red-300 transition text-[11px] flex items-center gap-1 font-prompt" title="ออกจากโหมดเต็มจอ (Esc หรือ F)">
+            <span>✕ ออก</span>
+        </button>
+    </div>
+
+    <!-- Top Floating Toolbar -->
+    <header class="bg-slate-900/90 border-b border-slate-800 backdrop-blur-md px-4 py-3 sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <!-- Left: Presentation Title & Brand -->
+            <div class="flex items-center space-x-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-brand-orange text-white flex items-center justify-center font-bold text-sm shadow-md">
+                    ปภ.
+                </div>
+                <div>
+                    <h1 class="text-sm font-bold font-prompt text-white tracking-wide flex items-center gap-2">
+                        การบริหารจัดการภัยพิบัติด้วยเทคโนโลยีดิจิทัล
+                        <span
+                            class="text-[10px] bg-brand-blueNavy text-blue-200 px-2 py-0.5 rounded border border-blue-500/30">Interactive
+                            Deck</span>
+                    </h1>
+                    <p class="text-[11px] text-slate-400">ศูนย์พักพิง • ระบบเยียวยา มติ ครม. (ทางรัฐ x Linkage) •
+                        Disaster Data Hub & Digital Twin</p>
+                </div>
+            </div>
+
+            <!-- Center: Navigation Controls -->
+            <div class="flex items-center space-x-2">
+                <button onclick="prevSlide()" title="สไลด์ก่อนหน้า (Arrow Left)"
+                    class="p-2 rounded-lg bg-slate-800 hover:bg-brand-orange hover:text-white text-slate-300 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <div
+                    class="bg-slate-800 px-3 py-1.5 rounded-lg text-xs font-mono font-bold text-slate-200 border border-slate-700 min-w-[70px] text-center">
+                    <span id="current-slide-num">1</span> / <span id="total-slides-num">12</span>
+                </div>
+                <button onclick="nextSlide()" title="สไลด์ถัดไป (Arrow Right / Space)"
+                    class="p-2 rounded-lg bg-slate-800 hover:bg-brand-orange hover:text-white text-slate-300 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Right: View Modes & Action Tools -->
+            <div class="flex items-center space-x-2 text-xs font-prompt">
+                <a href="disaster_presentation_slides.pdf" download
+                    class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-red-950/80 hover:bg-red-900 text-red-200 border border-red-700/60 transition shadow-sm"
+                    title="ดาวน์โหลดไฟล์เอกสาร PDF (12 หน้า A4 แนวนอน)">
+                    <span>📄 โหลด PDF</span>
+                </a>
+                <a href="disaster_presentation_slides.pptx" download
+                    class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-orange-950/80 hover:bg-orange-900 text-orange-200 border border-orange-700/60 transition shadow-sm"
+                    title="ดาวน์โหลดไฟล์ PowerPoint 16:9 (พร้อมโน้ตผู้บรรยายและฝังวิดีโอชุดที่ 1)">
+                    <span>📊 โหลด PPTX</span>
+                </a>
+                <button onclick="toggleNotes()" id="btn-notes"
+                    class="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                    <span>🎙️ โน้ตผู้บรรยาย</span>
+                </button>
+                <button onclick="toggleGridMode()" id="btn-grid"
+                    class="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                    <span>🗂️ ดูทุกสไลด์ (Grid)</span>
+                </button>
+                <button onclick="toggleFullscreen()" title="โหมดเต็มหน้าจอ (F)"
+                    class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                    </svg>
+                </button>
+                <button onclick="window.print()" title="พิมพ์หรือบันทึก PDF"
+                    class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-800 h-1 mt-3">
+            <div id="presentation-progress" class="bg-brand-orange h-1 transition-all duration-300" style="width: 10%;">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Presentation Container -->
+    <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+
+        <!-- ============================================================== -->
+        <!-- SLIDES WRAPPER (Interactive Single-Slide or Grid View)        -->
+        <!-- ============================================================== -->
+        <div id="slides-viewport" class="w-full flex justify-center items-center">
+
+            <!-- SLIDE 1: COVER -->
+            <div id="slide-1"
+                class="slide-element w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <!-- Slide Header Banner -->
+                <div
+                    class="bg-gradient-to-r from-brand-blueNavy via-brand-bluePrimary to-brand-orange px-8 py-5 text-white flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-3 h-3 rounded-full bg-brand-orange animate-ping"></span>
+                        <span
+                            class="text-xs font-prompt font-semibold tracking-wider uppercase text-blue-200">Government
+                            Digital Transformation Keynote</span>
+                    </div>
+                    <span class="text-xs font-mono bg-black/20 px-2.5 py-1 rounded">SLIDE 01 / 12</span>
+                </div>
+
+                <!-- Slide Center Body -->
+                <div class="px-8 sm:px-12 py-8 flex-1 flex flex-col justify-center">
+                    <div
+                        class="inline-flex items-center space-x-2 bg-orange-100 text-brand-orange border border-orange-200 px-3.5 py-1 rounded-full text-xs font-prompt font-bold mb-4 w-fit">
+                        <span>นวัตกรรมดิจิทัลเพื่อการจัดการสาธารณภัยแห่งชาติ</span>
+                    </div>
+                    <h2
+                        class="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-prompt text-brand-blueNavy leading-tight mb-4">
+                        การบริหารจัดการภัยพิบัติ<br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange via-orange-600 to-amber-500">
+                            ด้วยเทคโนโลยีดิจิทัล
+                        </span>
+                    </h2>
+                    <p class="text-slate-600 text-sm sm:text-base max-w-3xl leading-relaxed font-sarabun mb-6">
+                        ยกระดับการพิทักษ์ชีวิตและทรัพย์สินของประชาชน จากการจัดการศูนย์พักพิงชั่วคราว
+                        (shelter.disaster.go.th)
+                        การจ่ายเงินเยียวยาตามมติ ครม. ผ่านระบบออนไลน์ (relief.disaster.go.th)
+                        สู่ระบบบูรณาการข้อมูลภัยพิบัติ (Disaster Data Hub) และระบบคู่เสมือนจริง (Digital Twin)
+                    </p>
+
+                    <!-- Key 3 Pillars Pills -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center space-x-3">
+                            <span class="text-xl">🏕️</span>
+                            <div>
+                                <span
+                                    class="font-bold text-xs font-prompt text-brand-blueNavy block">ศูนย์พักพิงชั่วคราว</span>
+                                <span class="text-[11px] text-slate-500">shelter.disaster.go.th</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center space-x-3">
+                            <span class="text-xl">📲</span>
+                            <div>
+                                <span class="font-bold text-xs font-prompt text-brand-blueNavy block">การจ่ายเงินเยียวยาตามมติ ครม.
+                                    ผ่านระบบออนไลน์</span>
+                                <span class="text-[11px] text-slate-500">relief x ทางรัฐ x Linkage</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center space-x-3">
+                            <span class="text-xl">🌐</span>
+                            <div>
+                                <span class="font-bold text-xs font-prompt text-brand-blueNavy block">Digital Twin & Data Hub</span>
+                                <span class="text-[11px] text-slate-500">3D Simulation, AI (LSTM) & EOC Portal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide Footer -->
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-3.5 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>กรมป้องกันและบรรเทาสาธารณภัย (ปภ.) กระทรวงมหาดไทย</span>
+                    <span>และมีการบูรณาการกับหน่วยงานที่เกี่ยวข้อง</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: THE PARADIGM SHIFT -->
+            <div id="slide-2"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div class="bg-brand-blueNavy px-8 py-4 text-white flex justify-between items-center">
+                    <span class="text-xs font-prompt font-semibold text-orange-400">THE PARADIGM SHIFT •
+                        จุดเปลี่ยนเชิงยุทธศาสตร์</span>
+                    <span class="text-xs font-mono bg-white/10 px-2.5 py-1 rounded">SLIDE 02 / 12</span>
+                </div>
+
+                <div class="px-8 sm:px-12 py-6 flex-1 flex flex-col justify-center">
+                    <h3 class="text-xl sm:text-2xl font-bold font-prompt text-brand-blueNavy mb-2">
+                        ก้าวข้ามความล่าช้าในอดีต สู่ "การบริหารจัดการวิกฤตบนฐานข้อมูลจริง"
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-6 font-sarabun">
+                        เปรียบเทียบความแตกต่างระหว่างการทำงานแบบเดิม (Paper & Isolated) กับระบบดิจิทัลบูรณาการ (Digital
+                        & Interoperable)
+                    </p>
+
+                    <!-- Comparison Matrix 2 Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Left: Past Pain Points -->
+                        <div class="bg-red-50/60 border-2 border-red-200 rounded-xl p-5">
+                            <div class="flex items-center space-x-2 text-red-700 font-bold font-prompt text-sm mb-3">
+                                <span
+                                    class="w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center text-xs">✕</span>
+                                <span>ปัญหาและข้อจำกัดในอดีต (The Past)</span>
+                            </div>
+                            <ul class="space-y-2.5 text-xs text-slate-700">
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-red-500 font-bold">•</span>
+                                    <span><strong>อพยพไร้ทิศทาง:</strong> ประชาชนไม่ทราบว่าศูนย์ไหนเปิด ศูนย์ไหนเต็ม
+                                        ต้องเสี่ยงเดินทางลุยน้ำ</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-red-500 font-bold">•</span>
+                                    <span><strong>ภาระกระดาษมหาศาล:</strong>
+                                        ขอเงินเยียวยาต้องถ่ายสำเนาบัตรประชาชน/ทะเบียนบ้าน เอกสารสูญหายบ่อยครั้ง</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-red-500 font-bold">•</span>
+                                    <span><strong>ความล่าช้า 45–90 วัน:</strong> รอคอยการอนุมัตินาน
+                                        เงินไม่ทันฟื้นฟูหลังน้ำลดทันที</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Right: Digital Future -->
+                        <div class="bg-emerald-50/60 border-2 border-emerald-300 rounded-xl p-5">
+                            <div
+                                class="flex items-center space-x-2 text-emerald-800 font-bold font-prompt text-sm mb-3">
+                                <span
+                                    class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs">✓</span>
+                                <span>การจัดการสาธารณภัยยุคดิจิทัล (The Digital Future)</span>
+                            </div>
+                            <ul class="space-y-2.5 text-xs text-slate-700">
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">•</span>
+                                    <span><strong>รู้พิกัด-ความจุ Real-Time:</strong>
+                                        ค้นหาศูนย์พักพิงที่ใกล้และพร้อมที่สุดผ่านมือถือ นำทางด้วย GPS</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">•</span>
+                                    <span><strong>Paperless 100%:</strong> ดึงฐานทะเบียนราษฎรอัตโนมัติผ่าน Linkage
+                                        Center และ Digital ID "ทางรัฐ"</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">•</span>
+                                    <span><strong>จ่ายตรงพร้อมเพย์ในไม่กี่วัน:</strong> เงินถึงมือผู้ประสบภัยอย่างแม่นยำ
+                                        ปราศจากการทุจริต</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-3 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>หัวใจสำคัญ: Data-Driven Decision Making & Citizen-Centric Services</span>
+                    <span>ปภ. Digital Evolution</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 3: SHELTER SYSTEM -->
+            <div id="slide-3"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div class="bg-brand-orange px-8 py-4 text-white flex justify-between items-center">
+                    <span class="text-xs font-prompt font-semibold text-orange-100">เสาหลักที่ 1 •
+                        ระบบบริหารจัดการศูนย์พักพิงชั่วคราว</span>
+                    <span class="text-xs font-mono bg-black/20 px-2.5 py-1 rounded">SLIDE 03 / 12</span>
+                </div>
+
+                <div class="px-8 sm:px-12 py-6 flex-1 flex flex-col justify-center">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold font-prompt text-brand-blueNavy">
+                            ระบบบริหารจัดการศูนย์พักพิงรองรับสถานการณ์ภัยพิบัติ
+                        </h3>
+                        <a href="https://shelter.disaster.go.th/" target="_blank"
+                            class="text-xs bg-orange-100 text-brand-orange font-bold px-3 py-1 rounded-full border border-orange-200 hover:bg-orange-200 transition">
+                            shelter.disaster.go.th ↗
+                        </a>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-5 font-sarabun">
+                        ศูนย์รวมข้อมูลจุดอพยพและศูนย์พักพิงทั่วประเทศแบบ Real-time
+                        เพื่อความปลอดภัยสูงสุดของพี่น้องประชาชน
+                    </p>
+
+                    <!-- 4 Pillars of Shelter Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div
+                            class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-brand-orange transition">
+                            <div>
+                                <span class="text-2xl mb-2 block">📍</span>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy">GIS Live Location</h4>
+                                <p class="text-[11px] text-slate-600 mt-1">แสดงพิกัดบนแผนที่
+                                    นำทางไปยังศูนย์ที่เปิดรับผู้พักพิงที่ใกล้ที่สุดทันที</p>
+                            </div>
+                            <span
+                                class="mt-3 text-[10px] bg-blue-100 text-brand-bluePrimary px-2 py-0.5 rounded w-fit">Interactive
+                                GPS</span>
+                        </div>
+
+                        <div
+                            class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-brand-orange transition">
+                            <div>
+                                <span class="text-2xl mb-2 block">📊</span>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy">Capacity Tracking</h4>
+                                <p class="text-[11px] text-slate-600 mt-1">บันทึกยอดความจุสูงสุด
+                                    เทียบกับจำนวนผู้เข้าพักจริง รู้ทันทีว่ายังมีที่ว่างหรือไม่</p>
+                            </div>
+                            <span
+                                class="mt-3 text-[10px] bg-orange-100 text-brand-orange px-2 py-0.5 rounded w-fit">Real-time
+                                Count</span>
+                        </div>
+
+                        <div
+                            class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-brand-orange transition">
+                            <div>
+                                <span class="text-2xl mb-2 block">📦</span>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy">Relief Stock</h4>
+                                <p class="text-[11px] text-slate-600 mt-1">มอนิเตอร์สิ่งของบรรเทาทุกข์ น้ำดื่ม อาหาร ยา
+                                    เต็นท์ เติมเสบียงตรงจุดไม่ขาดแคลน</p>
+                            </div>
+                            <span
+                                class="mt-3 text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded w-fit">Supply
+                                Chain</span>
+                        </div>
+
+                        <div
+                            class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-brand-orange transition">
+                            <div>
+                                <span class="text-2xl mb-2 block">🩺</span>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy">Vulnerable Screening</h4>
+                                <p class="text-[11px] text-slate-600 mt-1">คัดกรองผู้ป่วยติดเตียง คนชรา หญิงมีครรภ์
+                                    และเด็ก เพื่อให้แพทย์ดูแลเป็นพิเศษ</p>
+                            </div>
+                            <span
+                                class="mt-3 text-[10px] bg-purple-100 text-purple-800 px-2 py-0.5 rounded w-fit">Healthcare
+                                Focus</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-3 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>ตอบโจทย์: มาตรฐานศูนย์พักพิงสากล (Sphere Standards) ด้วยพลังดิจิทัล</span>
+                    <span>ระบบบริหารศูนย์พักพิง ปภ.</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: RELIEF SYSTEM -->
+            <div id="slide-4"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div class="bg-brand-bluePrimary px-8 py-4 text-white flex justify-between items-center">
+                    <span class="text-xs font-prompt font-semibold text-blue-200">เสาหลักที่ 2 •
+                        การจ่ายเงินเยียวยาตามมติ ครม. ผ่านระบบออนไลน์ (relief.disaster.go.th)</span>
+                    <span class="text-xs font-mono bg-black/20 px-2.5 py-1 rounded">SLIDE 04 / 12</span>
+                </div>
+
+                <div class="px-8 sm:px-12 py-6 flex-1 flex flex-col justify-center">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-xl sm:text-2xl font-bold font-prompt text-brand-blueNavy">
+                            การจ่ายเงินเยียวยาตามมติ ครม. ผ่านระบบออนไลน์ (relief.disaster.go.th)
+                        </h3>
+                        <a href="https://relief.disaster.go.th/" target="_blank"
+                            class="text-xs bg-blue-100 text-brand-bluePrimary font-bold px-3 py-1 rounded-full border border-blue-200 hover:bg-blue-200 transition">
+                            relief.disaster.go.th ↗
+                        </a>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-5 font-sarabun">
+                        เงินช่วยเหลือเยียวยาครัวเรือนละ 9,000 บาท ตามเกณฑ์ระยะเวลาน้ำท่วมขัง รวดเร็ว โปร่งใส และทั่วถึง
+                    </p>
+
+                    <!-- 3 Core Engines Card -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-50 border-t-4 border-brand-orange rounded-xl p-4 shadow-sm">
+                            <span class="text-xs font-bold font-prompt text-brand-orange uppercase">Citizen
+                                Touchpoint</span>
+                            <h4 class="font-bold text-sm font-prompt text-brand-blueNavy mt-1">แอปพลิเคชัน "ทางรัฐ"
+                                (DGA)</h4>
+                            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                                ประชาชนยื่นคำร้องขอรับเงินช่วยเหลือด้วยตนเองผ่านมือถือ ยืนยันตัวตนด้วย Digital ID
+                                ติดตามสถานะได้ทุกขั้นตอนตลอด 24 ชั่วโมง
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 border-t-4 border-brand-bluePrimary rounded-xl p-4 shadow-sm">
+                            <span class="text-xs font-bold font-prompt text-brand-bluePrimary uppercase">Identity
+                                Link</span>
+                            <h4 class="font-bold text-sm font-prompt text-brand-blueNavy mt-1">Linkage Center
+                                (กรมการปกครอง)</h4>
+                            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                                เชื่อมโยงฐานข้อมูลทะเบียนราษฎรอัตโนมัติ ตรวจสอบเลข 13 หลัก สถานะเจ้าบ้าน และที่อยู่จริง
+                                ยกเลิกการใช้สำเนาบัตรและทะเบียนบ้าน 100%
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 border-t-4 border-emerald-500 rounded-xl p-4 shadow-sm">
+                            <span class="text-xs font-bold font-prompt text-emerald-700 uppercase">Direct Payment</span>
+                            <h4 class="font-bold text-sm font-prompt text-brand-blueNavy mt-1">พร้อมเพย์ (PromptPay)
+                            </h4>
+                            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                                ระบบ Relief ส่งออกข้อมูล (Export) ที่ผ่านการอนุมัติ ส่งต่อให้ธนาคารออมสิน เพื่อโอนเงินเยียวยาตรงเข้าบัญชีพร้อมเพย์ที่ผูกกับเลขบัตรประชาชน 13 หลัก รวดเร็วและตรวจสอบได้ทุกขั้นตอน
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-3 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>มติ ครม. เยียวยาผู้ประสบภัยอุทกภัย • ลดระยะเวลาจากหลายเดือนสู่ไม่กี่วัน</span>
+                    <span>relief.disaster.go.th</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: ARCHITECTURE DATA FLOW -->
+            <div id="slide-5"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div class="bg-brand-blueNavy px-8 py-4 text-white flex justify-between items-center">
+                    <span class="text-xs font-prompt font-semibold text-orange-400">สถาปัตยกรรมระบบ • End-to-End
+                        Interoperability Architecture</span>
+                    <span class="text-xs font-mono bg-white/10 px-2.5 py-1 rounded">SLIDE 05 / 12</span>
+                </div>
+
+                <div class="px-8 sm:px-12 py-5 flex-1 flex flex-col justify-center">
+                    <h3 class="text-lg sm:text-xl font-bold font-prompt text-brand-blueNavy mb-1">
+                        ผังการไหลของข้อมูลการเยียวยาผู้ประสบภัย (Data Flow Diagram)
+                    </h3>
+                    <p class="text-[11px] text-slate-500 mb-4 font-sarabun">
+                        การบูรณาการข้อมูลแบบไร้รอยต่อระหว่าง DGA (ทางรัฐ), กรมการปกครอง (Linkage), ปภ. และระบบ e-Payment
+                    </p>
+
+                    <!-- Interactive Diagram Cards Horizontal Flow -->
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 relative text-center">
+                        <!-- Step 1 -->
+                        <div
+                            class="bg-blue-50 border-2 border-brand-bluePrimary rounded-xl p-3 flex flex-col justify-between">
+                            <div>
+                                <span
+                                    class="w-6 h-6 rounded-full bg-brand-bluePrimary text-white flex items-center justify-center font-bold text-xs mx-auto mb-1">1</span>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy">แอป "ทางรัฐ"</h4>
+                                <p class="text-[10px] text-slate-600 mt-1">ยื่นคำร้อง + แนบรูปภาพ</p>
+                            </div>
+                            <span class="mt-2 text-[9px] bg-blue-200 text-blue-900 rounded py-0.5 font-mono">Mobile
+                                App</span>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div
+                            class="bg-orange-50 border-2 border-brand-orange rounded-xl p-3 flex flex-col justify-between">
+                            <div>
+                                <span
+                                    class="w-6 h-6 rounded-full bg-brand-orange text-white flex items-center justify-center font-bold text-xs mx-auto mb-1">2</span>
+                                <h4 class="font-bold text-xs font-prompt text-brand-orange">Linkage Center</h4>
+                                <p class="text-[10px] text-slate-600 mt-1">ตรวจสิทธิ์เลข 13 หลัก ทะเบียนราษฎร (DOPA)</p>
+                            </div>
+                            <span class="mt-2 text-[9px] bg-orange-200 text-orange-900 rounded py-0.5 font-mono">API
+                                Gateway</span>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="bg-slate-50 border-2 border-slate-700 rounded-xl p-3 flex flex-col justify-between">
+                            <div>
+                                <span
+                                    class="w-6 h-6 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs mx-auto mb-1">3</span>
+                                <h4 class="font-bold text-xs font-prompt text-slate-800">relief.disaster</h4>
+                                <p class="text-[10px] text-slate-600 mt-1">อปท. ประชาคม ก.ช.ภ.อ. / ก.ช.ภ.จ.</p>
+                            </div>
+                            <span class="mt-2 text-[9px] bg-slate-200 text-slate-800 rounded py-0.5 font-mono">ปภ. Core
+                                Engine</span>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div
+                            class="bg-indigo-50 border-2 border-indigo-600 rounded-xl p-3 flex flex-col justify-between">
+                            <div>
+                                <span
+                                    class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs mx-auto mb-1">4</span>
+                                <h4 class="font-bold text-xs font-prompt text-indigo-900">ส่งต่อธนาคารออมสิน</h4>
+                                <p class="text-[10px] text-slate-600 mt-1">Export ข้อมูลที่อนุมัติ ส่งต่อธนาคารออมสิน</p>
+                            </div>
+                            <span class="mt-2 text-[9px] bg-indigo-200 text-indigo-900 rounded py-0.5 font-mono">Gov
+                                e-Payment</span>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div
+                            class="bg-emerald-50 border-2 border-emerald-600 rounded-xl p-3 flex flex-col justify-between">
+                            <div>
+                                <span
+                                    class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs mx-auto mb-1">5</span>
+                                <h4 class="font-bold text-xs font-prompt text-emerald-800">พร้อมเพย์</h4>
+                                <p class="text-[10px] text-slate-600 mt-1">เงินโอนเข้าบัญชี 9,000 บาท ทันที</p>
+                            </div>
+                            <span
+                                class="mt-2 text-[9px] bg-emerald-200 text-emerald-900 rounded py-0.5 font-mono">PromptPay</span>
+                        </div>
+                    </div>
+
+                    <!-- Security & Interoperability Summary -->
+                    <div
+                        class="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center justify-around text-xs text-slate-600 font-prompt">
+                        <span>🔒 <strong>ความปลอดภัย:</strong> Digital ID มาตรฐาน IAL 2.3+</span>
+                        <span>📄 <strong>Paperless:</strong> ยกเลิกสำเนากระดาษ 100%</span>
+                        <span>⚡ <strong>ความเร็ว:</strong> โอนตรงผ่านพร้อมเพย์ในไม่กี่วัน</span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-3 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>กระบวนการเชื่อมโยงระบบสมบูรณ์แบบ (Seamless Interoperability)</span>
+                    <span>DGA x DOPA x DDPM x CGD</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 6: COMPARISON TABLE -->
+            <div id="slide-6"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div class="bg-brand-blueNavy px-8 py-4 text-white flex justify-between items-center">
+                    <span class="text-xs font-prompt font-semibold text-orange-400">ประสิทธิผลเชิงประจักษ์ • Impact &
+                        Comparison</span>
+                    <span class="text-xs font-mono bg-white/10 px-2.5 py-1 rounded">SLIDE 06 / 12</span>
+                </div>
+
+                <div class="px-8 sm:px-12 py-5 flex-1 flex flex-col justify-center">
+                    <h3 class="text-lg sm:text-xl font-bold font-prompt text-brand-blueNavy mb-1">
+                        เปรียบเทียบกระบวนการเยียวยาผู้ประสบภัย: ก่อน vs หลังใช้ระบบดิจิทัล
+                    </h3>
+                    <p class="text-[11px] text-slate-500 mb-3 font-sarabun">
+                        ความเปลี่ยนแปลงอย่างเป็นรูปธรรมในการให้บริการภาครัฐเพื่อประชาชน
+                    </p>
+
+                    <div class="overflow-hidden border border-slate-200 rounded-xl">
+                        <table class="w-full text-left text-xs font-sarabun">
+                            <thead class="bg-slate-100 font-prompt text-slate-700">
+                                <tr>
+                                    <th class="p-2.5 border-b border-slate-200">ขั้นตอนการดำเนินงาน</th>
+                                    <th class="p-2.5 border-b border-slate-200 text-red-600 bg-red-50/50">กระบวนการเดิม
+                                        (Paper-Based)</th>
+                                    <th class="p-2.5 border-b border-slate-200 text-emerald-700 bg-emerald-50/50">
+                                        กระบวนการใหม่ (Digital Ecosystem)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="p-2.5 font-bold font-prompt text-brand-blueNavy">1. การยื่นคำร้อง</td>
+                                    <td class="p-2.5 text-slate-600">เดินทางไป อปท. เข้าแถวกรอกแบบฟอร์มกระดาษ</td>
+                                    <td class="p-2.5 text-emerald-700 font-medium bg-emerald-50/20">ยื่นผ่านแอป 'ทางรัฐ'
+                                        บนมือถือได้ตลอด 24 ชม.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold font-prompt text-brand-blueNavy">2. เอกสารประจำตัว</td>
+                                    <td class="p-2.5 text-slate-600">สำเนาบัตรประชาชน + สำเนาทะเบียนบ้าน</td>
+                                    <td class="p-2.5 text-emerald-700 font-medium bg-emerald-50/20">
+                                        ดึงข้อมูลอัตโนมัติผ่าน DOPA Linkage (ไร้กระดาษ)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold font-prompt text-brand-blueNavy">3. การตรวจสอบความซ้ำซ้อน
+                                    </td>
+                                    <td class="p-2.5 text-slate-600">ตรวจแฟ้มรายชื่อด้วยมือ เสี่ยงผิดพลาดและตกหล่น</td>
+                                    <td class="p-2.5 text-emerald-700 font-medium bg-emerald-50/20">ระบบตรวจสอบเลข 13
+                                        หลักและพิกัดบ้านตัดสิทธิ์ทันที</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold font-prompt text-brand-blueNavy">4. ระยะเวลาได้รับเงิน
+                                    </td>
+                                    <td class="p-2.5 text-red-600 font-bold">45 – 90 วัน</td>
+                                    <td class="p-2.5 text-emerald-700 font-bold bg-emerald-50/20">
+                                        ได้รับเงินผ่านพร้อมเพย์ในไม่กี่วันทำการ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-3 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>ผลลัพธ์: ประหยัดเวลา ลดค่าเดินทางประชาชน และเพิ่มความโปร่งใส 100%</span>
+                    <span>สรุปการเปรียบเทียบ</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 7: DIGITAL TWIN PAIN POINTS (4 DIMENSIONS) & 4-PHASE LIFECYCLE -->
+            <div id="slide-7"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div
+                    class="bg-gradient-to-r from-brand-blueNavy via-teal-900 to-slate-900 px-8 py-3 text-white flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span
+                            class="text-xs font-prompt font-semibold text-emerald-200 uppercase tracking-wider">เสาหลักที่
+                            3 • การประยุกต์ใช้เทคโนโลยีคู่เสมือนจริง (DIGITAL TWIN) ของ ปภ.</span>
+                    </div>
+                    <span class="text-xs font-mono bg-black/30 px-2.5 py-1 rounded border border-emerald-500/30">SLIDE
+                        07 / 12</span>
+                </div>
+
+                <div class="px-6 sm:px-10 py-4 flex-1 flex flex-col justify-between">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-extrabold font-prompt text-brand-blueNavy">
+                                ปัญหาและข้อจำกัดในปัจจุบัน (4 ด้าน) สู่กระบวนงาน Digital Twin ตลอดวงจร 4 ระยะ
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-sarabun mt-0.5">
+                                ยกระดับการบริหารจัดการสาธารณภัยของ ปภ. จากการตั้งรับด้วยเอกสารและการสืบค้นแบบแยกส่วน สู่การจำลองและสั่งการอัจฉริยะครบวงจร
+                            </p>
+                        </div>
+                        <span
+                            class="bg-emerald-100 text-emerald-800 text-[10px] font-prompt font-bold px-2.5 py-1 rounded-full border border-emerald-200">
+                            Pain Points & 4-Phase Lifecycle
+                        </span>
+                    </div>
+
+                    <!-- Main 2-Column Content: Left (4 Pain Points) | Right (4 Lifecycle Phases) -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 my-2">
+                        <!-- Left Column: 1. ปัญหาและข้อจำกัดในปัจจุบัน (4 ด้าน) -->
+                        <div class="md:col-span-6 bg-red-50/50 border border-red-200 rounded-xl p-3.5 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-bold text-xs font-prompt text-red-800 flex items-center gap-1.5">
+                                        <span class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center text-[10px]">!</span>
+                                        <span>1. ปัญหาและข้อจำกัดในปัจจุบัน (4 ด้านหลัก)</span>
+                                    </h4>
+                                    <span class="text-[9px] bg-red-100 text-red-700 font-mono px-2 py-0.5 rounded font-bold">AS-IS LIMITATIONS</span>
+                                </div>
+                                <div class="space-y-2 text-[11px] text-slate-700">
+                                    <div class="bg-white/90 p-2 rounded-lg border border-red-100 shadow-sm">
+                                        <span class="font-bold font-prompt text-red-700 block">1.1 ด้านข้อมูลและการบูรณาการ</span>
+                                        <p class="text-[10.5px] text-slate-600 leading-snug mt-0.5">ข้อมูลกระจัดกระจายไร้การแลกเปลี่ยนอัตโนมัติ ต้องสืบค้นจากเว็บหรือทำหนังสือขอเป็นกรณีทำให้ล่าช้า มาตรฐานข้อมูลไม่สอดคล้องกัน สถานีตรวจวัดไม่เพียงพอ และ<strong>ขาดข้อมูลภูมิสารสนเทศ 3 มิติ (3D Geospatial Data)</strong></p>
+                                    </div>
+                                    <div class="bg-white/90 p-2 rounded-lg border border-red-100 shadow-sm">
+                                        <span class="font-bold font-prompt text-red-700 block">1.2 ด้านการวิเคราะห์และคาดการณ์</span>
+                                        <p class="text-[10.5px] text-slate-600 leading-snug mt-0.5">ขาดข้อมูล 3 มิติสำหรับทำ <strong>Multi-Scenario Analysis</strong> ทำให้ไม่สามารถคาดการณ์ระดับน้ำ ความรุนแรง พื้นที่ได้รับผลกระทบ หรือทดสอบแผนเผชิญเหตุในสภาพแวดล้อมเสมือนจริงได้อย่างแม่นยำ</p>
+                                    </div>
+                                    <div class="bg-white/90 p-2 rounded-lg border border-red-100 shadow-sm">
+                                        <span class="font-bold font-prompt text-red-700 block">1.3 ด้านกระบวนการทำงานและการจัดการทรัพยากร</span>
+                                        <p class="text-[10.5px] text-slate-600 leading-snug mt-0.5">รายงานสถานการณ์จากจังหวัดเป็นเอกสารทำมือ แผนเผชิญเหตุเป็นแฟ้มกระดาษไม่เชื่อมโยงเซนเซอร์จริง ข้อมูลทรัพยากร (เครื่องจักรกล อปพร. สิ่งของสำรองจ่าย) กระจัดกระจายไม่เป็นปัจจุบัน</p>
+                                    </div>
+                                    <div class="bg-white/90 p-2 rounded-lg border border-red-100 shadow-sm">
+                                        <span class="font-bold font-prompt text-red-700 block">1.4 ด้านเทคโนโลยี</span>
+                                        <p class="text-[10.5px] text-slate-600 leading-snug mt-0.5">ระบบสารสนเทศเดิมขาด API แลกเปลี่ยนข้อมูลอัตโนมัติ ไม่รองรับการปฏิบัติงานผ่านอุปกรณ์เคลื่อนที่ และยังไม่ได้นำ AI มาใช้ช่วยตัดสินใจอย่างเต็มประสิทธิภาพ</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: 2. กระบวนงานที่สำคัญตลอดวงจรการบริหารจัดการภัยพิบัติ 4 ระยะ -->
+                        <div class="md:col-span-6 bg-emerald-50/50 border border-emerald-200 rounded-xl p-3.5 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-bold text-xs font-prompt text-emerald-900 flex items-center gap-1.5">
+                                        <span class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">✓</span>
+                                        <span>2. กระบวนงานสำคัญตลอดวงจรภัยพิบัติ (4 ระยะ)</span>
+                                    </h4>
+                                    <span class="text-[9px] bg-emerald-100 text-emerald-800 font-mono px-2 py-0.5 rounded font-bold">TO-BE LIFECYCLE</span>
+                                </div>
+                                <div class="space-y-2 text-[11px] text-slate-700">
+                                    <div class="bg-white/90 p-2 rounded-lg border-l-4 border-blue-600 shadow-sm">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-bold font-prompt text-brand-blueNavy">ระยะที่ 1: ก่อนเกิดภัย (Prevention & Mitigation)</span>
+                                            <span class="text-[9px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-mono">Risk Modeling</span>
+                                        </div>
+                                        <p class="text-[10.5px] text-slate-600 leading-snug mt-0.5">รวบรวมข้อมูลสร้างแบบจำลองพื้นที่เสี่ยงภัย วิเคราะห์ความเสี่ยง และจำลองสถานการณ์ล่วงหน้าเพื่อวางแนวทางป้องกันและลดผลกระทบ</p>
+                                    </div>
+                                    <div class="bg-white/90 p-2 rounded-lg border-l-4 border-amber-500 shadow-sm">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-bold font-prompt text-brand-blueNavy">ระยะที่ 2: เตรียมความพร้อม (Preparedness)</span>
+                                            <span class="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-mono">Digital SOP & Drills</span>
+                                        </div>
+                                        <p class="text-[10.5px] text-slate-600 leading-snug mt-0.5">จัดทำและปรับปรุง<strong>แผนเผชิญเหตุดิจิทัล</strong> กำหนด SOP วางแผนเส้นทางอพยพ กำหนดจุดปลอดภัย จัดสรรทรัพยากรล่วงหน้า และซ้อมแผนเสมือนจริง</p>
+                                    </div>
+                                    <div class="bg-white/90 p-2 rounded-lg border-l-4 border-brand-orange shadow-sm">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-bold font-prompt text-brand-blueNavy">ระยะที่ 3: ตอบสนอง (Response)</span>
+                                            <span class="text-[9px] bg-orange-50 text-brand-orange px-1.5 py-0.5 rounded font-mono">Near Real-time EOC</span>
+                                        </div>
+                                        <p class="text-[10.5px] text-slate-600 leading-snug mt-0.5">เฝ้าระวังและติดตามสถานการณ์แบบใกล้เคียงเวลาจริง (Near Real-time) ผ่าน<strong>ศูนย์ปฏิบัติการกลาง</strong> ประเมินผลกระทบเชิงพื้นที่ และสั่งการระดมทรัพยากรช่วยผู้ประสบภัย</p>
+                                    </div>
+                                    <div class="bg-white/90 p-2 rounded-lg border-l-4 border-emerald-600 shadow-sm">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-bold font-prompt text-brand-blueNavy">ระยะที่ 4: ฟื้นฟู (Recovery)</span>
+                                            <span class="text-[9px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-mono">AAR & Model Tuning</span>
+                                        </div>
+                                        <p class="text-[10.5px] text-slate-600 leading-snug mt-0.5">รวบรวมข้อมูลผลการปฏิบัติงานจริงเปรียบเทียบกับผลลัพธ์จากแบบจำลอง เพื่อถอดบทเรียน (<strong>After Action Review: AAR</strong>) และปรับปรุงแผนงานรวมถึงความแม่นยำของ AI ในอนาคต</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Callout -->
+                    <div class="bg-slate-900 text-slate-200 rounded-xl px-4 py-2 flex items-center justify-between text-[11px] font-prompt">
+                        <span>🎯 <strong>เป้าหมายหลัก:</strong> เปลี่ยนผ่านจากระบบแยกส่วนและแผนกระดาษ สู่การบูรณาการด้วย <strong>4 ระบบหลักของ Digital Twin</strong> ครอบคลุมทุกมิติ</span>
+                        <span class="text-emerald-400 font-mono font-bold">End-to-End Transformation</span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-2.5 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>การประยุกต์ใช้เทคโนโลยีคู่เสมือนจริง (Digital Twin) • กรมป้องกันและบรรเทาสาธารณภัย (ปภ.)</span>
+                    <span>ปัญหา 4 ด้าน & วงจรภัยพิบัติ 4 ระยะ</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 8: DISASTER DATA HUB SYSTEM (5 DIMENSIONS OF UPGRADE) -->
+            <div id="slide-8"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div
+                    class="bg-gradient-to-r from-brand-blueNavy via-blue-900 to-slate-900 px-8 py-3 text-white flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                        <span
+                            class="text-xs font-prompt font-semibold text-cyan-200 uppercase tracking-wider">ระบบที่ 1 •
+                            ระบบบูรณาการข้อมูลภัยพิบัติ (DISASTER DATA HUB SYSTEM)</span>
+                    </div>
+                    <span class="text-xs font-mono bg-black/30 px-2.5 py-1 rounded border border-cyan-500/30">SLIDE
+                        08 / 12</span>
+                </div>
+
+                <div class="px-6 sm:px-10 py-3.5 flex-1 flex flex-col justify-between">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-extrabold font-prompt text-brand-blueNavy">
+                                การยกระดับระบบบูรณาการข้อมูลภัยพิบัติ (Disaster Data Hub) ใน 5 มิติหลัก
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-sarabun">
+                                เปรียบเทียบความแตกต่างระหว่างระบบสารสนเทศเดิม กับสถาปัตยกรรมคลังข้อมูลกลางเชิงพื้นที่และเซนเซอร์อัจฉริยะรูปแบบใหม่
+                            </p>
+                        </div>
+                        <span class="bg-blue-100 text-brand-bluePrimary text-[10px] font-prompt font-bold px-2.5 py-1 rounded-full border border-blue-200">
+                            5 Dimensions Upgrade (Legacy vs. New)
+                        </span>
+                    </div>
+
+                    <!-- 5 Dimensions Comparison Table -->
+                    <div class="overflow-hidden border border-slate-200 rounded-xl my-1.5 shadow-sm">
+                        <table class="w-full text-left text-[10.5px] font-sarabun leading-snug">
+                            <thead class="bg-slate-900 text-white font-prompt text-[11px]">
+                                <tr>
+                                    <th class="py-2 px-3 w-[22%]">มิติการยกระดับ</th>
+                                    <th class="py-2 px-3 w-[33%] text-red-300 bg-red-950/40">ระบบเดิม (Legacy System)</th>
+                                    <th class="py-2 px-3 w-[45%] text-emerald-300 bg-emerald-950/40">ระบบใหม่ (Disaster Data Hub System)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="py-2 px-3 font-bold font-prompt text-brand-blueNavy bg-slate-50">
+                                        1. กลไกการเชื่อมโยงและแลกเปลี่ยนข้อมูล
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-600 bg-red-50/20">
+                                        ขาดการบูรณาการและไม่มีการแลกเปลี่ยนข้อมูลอัตโนมัติ เจ้าหน้าที่ต้องสืบค้นจากเว็บไซต์แต่ละหน่วยงาน หรือทำหนังสือขอเป็นกรณี ทำให้ล่าช้าและไม่เป็นปัจจุบัน
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-800 bg-emerald-50/30">
+                                        เชื่อมต่ออัตโนมัติด้วย <strong>API Gateway, Message Queue</strong> และ <strong>Data Streaming Platform</strong> รับ-ส่งข้อมูลแบบเรียลไทม์และสตรีมมิงจากหน่วยงานภายนอก (<strong>กรมอุตุนิยมวิทยา, กรมทรัพยากรน้ำ, กรมทรัพยากรธรณี</strong>) และสถานีตรวจวัดภาคสนามโดยตรง
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="py-2 px-3 font-bold font-prompt text-brand-blueNavy bg-slate-50">
+                                        2. มาตรฐานและการกำกับดูแลข้อมูล (Data Governance)
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-600 bg-red-50/20">
+                                        ข้อมูลจากแต่ละแหล่งมีโครงสร้าง รูปแบบ และมาตรฐานต่างกัน (เช่น ข้อมูลทรัพยากร เครื่องจักรกล สิ่งของสำรองจ่าย) ทำให้รวมข้อมูลมาวิเคราะห์ร่วมกันได้ยาก
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-800 bg-emerald-50/30">
+                                        กำหนด <strong>Data Governance Framework</strong> และ <strong>มาตรฐานข้อมูลกลางด้านสาธารณภัย (Disaster Data Standards)</strong> ใช้รหัสพื้นที่และโครงสร้างเดียวกัน พร้อมระบบ <strong>Access Control, Metadata, Data Classification, Audit Trail</strong> และการจัดการวงจรชีวิตข้อมูล
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="py-2 px-3 font-bold font-prompt text-brand-blueNavy bg-slate-50">
+                                        3. มิติและความละเอียดของข้อมูลที่จัดเก็บ
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-600 bg-red-50/20">
+                                        จัดเก็บเฉพาะข้อมูลแผนที่พื้นฐาน 2 มิติ และสถิติทั่วไป ขาดข้อมูลภูมิประเทศความละเอียดสูง และมีสถานีตรวจวัดไม่เพียงพอในพื้นที่เสี่ยง
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-800 bg-emerald-50/30">
+                                        ยกระดับสู่ <strong>คลังข้อมูลกลางเชิงพื้นที่ (Central Spatial Data Warehouse)</strong> รองรับข้อมูล Spatial, Temporal และ <strong>3D Geospatial Data</strong> (ความสูงภูมิประเทศ โครงสร้างพื้นฐาน อาคาร) พร้อมติดตั้ง <strong>IoT Smart Sensor เพิ่มเติม 130 จุด</strong> ส่งข้อมูลเรียลไทม์เข้า Digital Twin
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="py-2 px-3 font-bold font-prompt text-brand-blueNavy bg-slate-50">
+                                        4. สถาปัตยกรรมฐานข้อมูลและเทคโนโลยีจัดเก็บ
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-600 bg-red-50/20">
+                                        แยกตามระบบงานย่อย (ฐานข้อมูลอุบัติเหตุ, อปพร., เครื่องจักรกล, สิ่งของสำรองจ่าย e-Stock) ไม่รองรับการประมวลผลขนาดใหญ่หรือเชื่อมต่อผ่าน API
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-800 bg-emerald-50/30">
+                                        ออกแบบสถาปัตยกรรมผสมผสาน: <strong>Spatial Relational Database</strong> (ข้อมูลเชิงพื้นที่/ตาราง), <strong>Time-series Database</strong> (ข้อมูลเซนเซอร์ตามเวลา), <strong>Object Storage</strong> (ไฟล์ภาพ/แผนที่/เอกสาร) และ <strong>Data Warehouse & Data Lake</strong> (วิเคราะห์ขั้นสูง)
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="py-2 px-3 font-bold font-prompt text-brand-blueNavy bg-slate-50">
+                                        5. การใช้ประโยชน์จากข้อมูลประวัติศาสตร์และ AI
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-600 bg-red-50/20">
+                                        ข้อมูลสถิติย้อนหลังถูกเก็บในรูปแบบตารางหรือเอกสารเพื่อใช้อ้างอิงพื้นฐาน ไม่ได้นำมาประมวลผลสร้างแบบจำลองคาดการณ์อัตโนมัติ
+                                    </td>
+                                    <td class="py-2 px-3 text-slate-800 bg-emerald-50/30">
+                                        จัดตั้ง <strong>คลังข้อมูลประวัติศาสตร์ภัยพิบัติ (Disaster Historical Data Repository)</strong> รวบรวมสถิติน้ำท่วม ดินถล่ม ปริมาณฝน และความเสียหายในอดีต เป็น <strong>Training Data</strong> ให้ <strong>AI / AutoML และ Deep Learning (เช่น โมเดล LSTM)</strong> พยากรณ์ระดับน้ำและแนวโน้มภัยล่วงหน้า
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Highlight Strip -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-2 flex items-center justify-between text-[11px] font-prompt text-brand-blueNavy">
+                        <span>📡 <strong>IoT Smart Sensor 130 จุดติดตั้งใหม่:</strong> ตรวจวัดปริมาณน้ำฝน ทิศทาง/ความเร็วลม อุณหภูมิ ความกดอากาศ ความชื้น และฝุ่น PM2.5 แบบ Real-time</span>
+                        <span class="bg-brand-bluePrimary text-white text-[10px] px-2.5 py-0.5 rounded font-mono">Streaming to Digital Twin</span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-2.5 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>ระบบบูรณาการข้อมูลภัยพิบัติ (Disaster Data Hub System) • กรมป้องกันและบรรเทาสาธารณภัย</span>
+                    <span>รากฐานข้อมูล 3 มิติ & Big Data</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 9: VIDEO SHOWCASE - วีดีทัศน์ที่ 1 -->
+            <div id="slide-9"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div
+                    class="bg-gradient-to-r from-emerald-700 via-teal-800 to-slate-900 px-8 py-3 text-white flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span
+                            class="text-xs font-prompt font-semibold text-emerald-200 uppercase tracking-wider">วีดีทัศน์นำเสนอ • DISASTER DIGITAL TWIN VIDEO</span>
+                    </div>
+                    <span class="text-xs font-mono bg-black/30 px-2.5 py-1 rounded border border-emerald-500/30">SLIDE
+                        09 / 12</span>
+                </div>
+
+                <div class="px-6 sm:px-10 py-3.5 flex-1 flex flex-col justify-between">
+                    <!-- Title Header -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                        <div>
+                            <h3
+                                class="text-lg sm:text-xl font-extrabold font-prompt text-brand-blueNavy flex items-center gap-2">
+                                วีดีทัศน์: การบริหารจัดการภัยพิบัติ
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-sarabun mt-0.5">
+                                รับชมวีดีทัศน์นำเสนอการประยุกต์ใช้เทคโนโลยีดิจิทัลและการจำลองสถานการณ์เสมือนจริงเพื่อการตัดสินใจของ ปภ.
+                            </p>
+                        </div>
+                        <span
+                            class="bg-emerald-100 text-emerald-800 text-[10px] font-prompt font-bold px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5 shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
+                            <span>▶ วีดีทัศน์ที่ 1</span>
+                        </span>
+                    </div>
+
+                    <!-- Video Container -->
+                    <div class="my-2 bg-slate-950 rounded-xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col items-center justify-center relative flex-1 min-h-[350px] max-h-[440px] p-2">
+                        <video id="slide-video-1" controls playsinline preload="metadata" poster="video_poster.jpg" class="w-full h-full max-h-[420px] rounded-lg bg-black object-contain shadow-md">
+                            <source src="วีดีทัศน์ที่ 1.mp4" type="video/mp4">
+                            เบราว์เซอร์ของคุณไม่รองรับการเล่นไฟล์วิดีโอ HTML5 กรุณาเปิดไฟล์ด้วยเบราว์เซอร์ Google Chrome หรือ Microsoft Edge
+                        </video>
+                    </div>
+
+                    <!-- Video Callout / Caption Bar -->
+                    <div
+                        class="bg-slate-900 text-slate-200 border border-slate-800 rounded-xl p-2 px-4 flex items-center justify-between text-[11px] font-prompt">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-base">🎬</span>
+                            <span class="text-slate-300"><strong>วีดีทัศน์ชุดที่ 1:</strong> การสาธิตการทำงานของแบบจำลองคู่เสมือนจริง การคาดการณ์น้ำท่วม-ดินถล่ม และระบบบัญชาการ ปภ.</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2.5 py-0.5 rounded border border-emerald-800">HD Video (MP4)</span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-2.5 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>วีดีทัศน์นำเสนอระบบคู่เสมือนจริง • กรมป้องกันและบรรเทาสาธารณภัย (ปภ.)</span>
+                    <span>วีดีทัศน์ที่ 1.mp4</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 10: 4 CORE SYSTEMS ARCHITECTURE OF DDPM DIGITAL TWIN -->
+            <div id="slide-10"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div class="bg-slate-900 px-8 py-3 text-white flex justify-between items-center">
+                    <span
+                        class="text-xs font-prompt font-semibold text-emerald-400 uppercase tracking-wider">สถาปัตยกรรม
+                        4 ระบบหลัก • DDPM DIGITAL TWIN ECOSYSTEM & NATIONAL EOC</span>
+                    <span class="text-xs font-mono bg-white/10 px-2.5 py-1 rounded">SLIDE 10 / 12</span>
+                </div>
+
+                <div class="px-6 sm:px-10 py-4 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg sm:text-xl font-extrabold font-prompt text-brand-blueNavy">
+                            กระบวนการและสถาปัตยกรรม 4 ระบบหลักของ Digital Twin ในการแก้ปัญหาครบวงจร
+                        </h3>
+                        <p class="text-[11px] text-slate-500 font-sarabun mt-0.5">
+                            บูรณาการตั้งแต่คลังข้อมูลกลางและเซนเซอร์ 130 จุด ➔ แบบจำลอง 3D & AI ➔ แผนเผชิญเหตุดิจิทัล ➔ ศูนย์ปฏิบัติการกลาง (National Disaster EOC Portal)
+                        </p>
+                    </div>
+
+                    <!-- 4 Core Systems Grid -->
+                    <div class="my-2 grid grid-cols-1 md:grid-cols-4 gap-3">
+
+                        <!-- System 1: Disaster Data Hub & IoT Sensors -->
+                        <div
+                            class="bg-gradient-to-b from-slate-100 to-white border-2 border-slate-600 rounded-xl p-3 flex flex-col justify-between shadow-sm">
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="w-5 h-5 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] font-mono">S1</span>
+                                    <span
+                                        class="text-[9px] bg-slate-200 text-slate-800 font-bold px-1.5 py-0.5 rounded">Data Hub & IoT</span>
+                                </div>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy leading-snug">1. ระบบบูรณาการข้อมูลและสถานีตรวจวัดอัจฉริยะ</h4>
+                                <p class="text-[10px] text-slate-500 font-mono mt-0.5">(Disaster Data Hub & IoT Sensors)</p>
+                                <ul class="text-[10.5px] text-slate-700 mt-1.5 space-y-1 leading-snug">
+                                    <li>• <strong>Central Spatial Data Warehouse</strong> + Data Governance</li>
+                                    <li>• เชื่อมหน่วยงานภายนอกอัตโนมัติผ่าน <strong>API Gateway & Data Streaming</strong></li>
+                                    <li>• ติดตั้ง <strong>IoT Smart Sensor เพิ่มเติม 130 จุด</strong> วัดปริมาณน้ำฝน ทิศทาง/ความเร็วลม อุณหภูมิ ความกดอากาศ ความชื้น และ PM2.5</li>
+                                </ul>
+                            </div>
+                            <div class="mt-2 bg-slate-900 text-amber-300 p-1.5 rounded text-[9.5px] font-mono text-center border border-slate-700">
+                                📡 130 IoT Stations + Real-time API
+                            </div>
+                        </div>
+
+                        <!-- System 2: Digital Twin Simulation System -->
+                        <div
+                            class="bg-gradient-to-b from-blue-50 to-white border-2 border-brand-bluePrimary rounded-xl p-3 flex flex-col justify-between shadow-sm">
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="w-5 h-5 rounded-full bg-brand-bluePrimary text-white flex items-center justify-center font-bold text-[10px] font-mono">S2</span>
+                                    <span
+                                        class="text-[9px] bg-blue-100 text-brand-bluePrimary font-bold px-1.5 py-0.5 rounded">3D & AI Sim</span>
+                                </div>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy leading-snug">2. ระบบคู่เสมือนจริงเพื่อการจำลองและคาดการณ์</h4>
+                                <p class="text-[10px] text-slate-500 font-mono mt-0.5">(Digital Twin Simulation System)</p>
+                                <ul class="text-[10.5px] text-slate-700 mt-1.5 space-y-1 leading-snug">
+                                    <li>• จำลอง<strong>น้ำท่วมและดินถล่มบน 3D Geospatial Data</strong> (ความลึก ทิศทาง ความเร็ว ขอบเขต)</li>
+                                    <li>• <strong>Multi-Scenario Analysis</strong> (ฝน 100/200/300 มม., เขื่อนระบายน้ำ, แนวกั้นน้ำ, ท่ออุดตัน)</li>
+                                    <li>• ใช้ <strong>AI / Machine Learning (LSTM และ AutoML)</strong> เรียนรู้ข้อมูลประวัติศาสตร์พยากรณ์ระดับน้ำ</li>
+                                </ul>
+                            </div>
+                            <div class="mt-2 bg-slate-900 text-cyan-300 p-1.5 rounded text-[9.5px] font-mono text-center border border-slate-700">
+                                🧠 3D Geospatial + AI (LSTM/AutoML)
+                            </div>
+                        </div>
+
+                        <!-- System 3: Digital Disaster Response Plan System -->
+                        <div
+                            class="bg-gradient-to-b from-emerald-50 to-white border-2 border-emerald-600 rounded-xl p-3 flex flex-col justify-between shadow-sm">
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px] font-mono">S3</span>
+                                    <span
+                                        class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">Dynamic Plan</span>
+                                </div>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy leading-snug">3. ระบบแผนเผชิญเหตุดิจิทัล</h4>
+                                <p class="text-[10px] text-slate-500 font-mono mt-0.5">(Digital Disaster Response Plan)</p>
+                                <ul class="text-[10.5px] text-slate-700 mt-1.5 space-y-1 leading-snug">
+                                    <li>• เปลี่ยนแผนกระดาษสู่<strong>แผนดิจิทัลที่มีพลวัต (Dynamic)</strong> เชื่อมโยง GIS ข้อมูลประชากร และเซนเซอร์</li>
+                                    <li>• กำหนดขั้นตอนปฏิบัติงานมาตรฐาน (<strong>SOP</strong>) วางแผนจัดสรรกำลังพลและเครื่องจักรกล</li>
+                                    <li>• <strong>จำลองการปฏิบัติงานตามแผน</strong> เพื่อตรวจสอบเส้นทางอพยพ จุดปลอดภัย และความพร้อมก่อนเกิดภัยจริง</li>
+                                </ul>
+                            </div>
+                            <div class="mt-2 bg-slate-900 text-emerald-300 p-1.5 rounded text-[9.5px] font-mono text-center border border-slate-700">
+                                📋 Dynamic GIS SOP & Virtual Drills
+                            </div>
+                        </div>
+
+                        <!-- System 4: National Disaster EOC Portal -->
+                        <div
+                            class="bg-gradient-to-b from-orange-50 to-white border-2 border-brand-orange rounded-xl p-3 flex flex-col justify-between shadow-sm">
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="w-5 h-5 rounded-full bg-brand-orange text-white flex items-center justify-center font-bold text-[10px] font-mono">S4</span>
+                                    <span
+                                        class="text-[9px] bg-orange-100 text-brand-orange font-bold px-1.5 py-0.5 rounded">Central EOC</span>
+                                </div>
+                                <h4 class="font-bold text-xs font-prompt text-brand-blueNavy leading-snug">4. ระบบสั่งการและติดตามสถานการณ์รวมศูนย์</h4>
+                                <p class="text-[10px] text-slate-500 font-mono mt-0.5">(National Disaster EOC Portal)</p>
+                                <ul class="text-[10.5px] text-slate-700 mt-1.5 space-y-1 leading-snug">
+                                    <li>• <strong>Single Operational Platform</strong> เชื่อม <strong>ปภ.ส่วนกลาง – ศูนย์ ปภ.เขต – สนง.ปภ.จังหวัด</strong></li>
+                                    <li>• แดชบอร์ดแผนที่หลายมิติ (<strong>Multi-Hazard Map</strong>) & <strong>Incident Management</strong> ครบวงจร</li>
+                                    <li>• <strong>Resource & Asset Management</strong> เช็กพิกัดเครื่องจักรกล กู้ภัย สิ่งของสำรองจ่าย และกำลังพลแบบเรียลไทม์</li>
+                                </ul>
+                            </div>
+                            <div class="mt-2 bg-slate-900 text-orange-300 p-1.5 rounded text-[9.5px] font-mono text-center border border-slate-700">
+                                🚨 Single Platform: ส่วนกลาง-เขต-จังหวัด
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Flow summary bar -->
+                    <div
+                        class="bg-slate-900 text-slate-300 rounded-xl p-2 px-4 flex items-center justify-between text-[11px] font-mono">
+                        <span class="text-emerald-400 flex items-center gap-1.5">
+                            <span>📡 Data Hub & IoT 130 จุด</span> ➔ <span>🌐 Digital Twin 3D & AI (LSTM)</span> ➔ <span>📋 แผนเผชิญเหตุดิจิทัล</span> ➔ <span>🚨 National EOC Portal</span>
+                        </span>
+                        <span class="text-orange-400 font-bold">4-System Integrated Pipeline</span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-2.5 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>สถาปัตยกรรม 4 ระบบหลักภายใต้โครงการ Digital Twin • กรมป้องกันและบรรเทาสาธารณภัย</span>
+                    <span>Single Operational Platform</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 11: STRATEGIC ROADMAP WITH NATIONAL DASHBOARD MOCKUP -->
+            <div id="slide-11"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div class="bg-slate-900 px-8 py-3 text-white flex justify-between items-center">
+                    <span
+                        class="text-xs font-prompt font-semibold text-emerald-400 uppercase tracking-wider">แผนที่นำทางยุทธศาสตร์
+                        • NATIONAL ROADMAP & OPERATIONAL IMPACT</span>
+                    <span class="text-xs font-mono bg-white/10 px-2.5 py-1 rounded">SLIDE 11 / 12</span>
+                </div>
+
+                <div class="px-6 sm:px-10 py-5 flex-1 flex flex-col justify-between">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold font-prompt text-brand-blueNavy">
+                                การขับเคลื่อนยุทธศาสตร์ Digital Twin & National EOC สู่ระดับชาติ
+                            </h3>
+                            <p class="text-xs text-slate-500 font-sarabun mt-0.5">
+                                ยกระดับจากคลังข้อมูลกลางและสถานีตรวจวัดอัจฉริยะ 130 จุด สู่ระบบสั่งการเอกภาพ (ปภ. ส่วนกลาง – ศูนย์ ปภ. เขต – สนง.ปภ.จังหวัด)
+                            </p>
+                        </div>
+                        <span
+                            class="bg-blue-100 text-brand-bluePrimary text-[11px] font-prompt font-bold px-3 py-1 rounded-full border border-blue-200">
+                            3-Phase Transformation
+                        </span>
+                    </div>
+
+                    <!-- NATIONAL ROLLOUT DASHBOARD MOCKUP -->
+                    <div
+                        class="my-3 bg-slate-950 rounded-xl border border-slate-800 p-4 text-white font-sans shadow-lg">
+                        <div
+                            class="flex flex-wrap items-center justify-between border-b border-slate-800 pb-2 mb-3 text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-brand-orange font-bold font-prompt text-sm">🇹🇭
+                                    ระบบติดตามการบูรณาการระดับชาติ (National Disaster EOC Readiness)</span>
+                            </div>
+                            <div class="text-[11px] text-slate-400 font-mono">
+                                IoT Smart Sensors ใหม่: <strong class="text-emerald-400">130 สถานี</strong> |
+                                โมเดล AI: <strong class="text-cyan-400">AutoML & Deep Learning (LSTM)</strong>
+                            </div>
+                        </div>
+
+                        <!-- 3 Roadmap Phase Milestone Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+
+                            <!-- Phase 1 -->
+                            <div
+                                class="bg-slate-900 border-t-4 border-blue-500 rounded-lg p-3 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1 text-[10px] font-mono">
+                                        <span class="text-blue-400 font-bold">ระยะที่ 1: รากฐานข้อมูล & IoT</span>
+                                        <span
+                                            class="bg-emerald-950 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-800">Data Hub</span>
+                                    </div>
+                                    <h4 class="font-bold text-xs font-prompt text-white">Disaster Data Hub & 130 Sensors</h4>
+                                    <p class="text-[11px] text-slate-300 mt-1">คลังข้อมูลกลางเชิงพื้นที่ 3 มิติ & มาตรฐานข้อมูล</p>
+                                    <ul class="mt-2 space-y-1 text-[10px] text-slate-400">
+                                        <li>• เชื่อมต่อกรมอุตุฯ กรมทรัพยากรน้ำ กรมทรัพยากรธรณี ผ่าน API Gateway & Streaming</li>
+                                        <li>• ติดตั้ง IoT Smart Sensor 130 จุด และจัดตั้ง Historical Data Repository</li>
+                                    </ul>
+                                </div>
+                                <div class="mt-3 pt-2 border-t border-slate-800 text-[10px] text-blue-300 font-mono">
+                                    สถานะ: บูรณาการฐานข้อมูล 4 รูปแบบ
+                                </div>
+                            </div>
+
+                            <!-- Phase 2 -->
+                            <div
+                                class="bg-slate-900 border-t-4 border-brand-orange rounded-lg p-3 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1 text-[10px] font-mono">
+                                        <span class="text-brand-orange font-bold">ระยะที่ 2: จำลอง 3D & แผนดิจิทัล</span>
+                                        <span
+                                            class="bg-amber-950 text-amber-300 px-1.5 py-0.5 rounded border border-amber-800 animate-pulse">Simulation</span>
+                                    </div>
+                                    <h4 class="font-bold text-xs font-prompt text-white">3D Twin & Digital Response Plan</h4>
+                                    <p class="text-[11px] text-slate-300 mt-1">จำลองอุทกภัย-ดินถล่ม & ทดสอบแผนเผชิญเหตุ</p>
+                                    <ul class="mt-2 space-y-1 text-[10px] text-slate-400">
+                                        <li>• วิเคราะห์ Multi-Scenario (ฝน 100/200/300 มม., เขื่อนระบายน้ำ, คันกั้นน้ำ)</li>
+                                        <li>• ยกระดับแผนเผชิญเหตุสู่รูปแบบ Dynamic SOP และฝึกซ้อมเสมือนจริง</li>
+                                    </ul>
+                                </div>
+                                <div class="mt-3 pt-2 border-t border-slate-800 text-[10px] text-orange-300 font-mono">
+                                    สถานะ: พยากรณ์แม่นยำด้วย AI (LSTM)
+                                </div>
+                            </div>
+
+                            <!-- Phase 3 -->
+                            <div
+                                class="bg-slate-900 border-t-4 border-emerald-500 rounded-lg p-3 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1 text-[10px] font-mono">
+                                        <span class="text-emerald-400 font-bold">ระยะที่ 3: สั่งการรวมศูนย์ & AAR</span>
+                                        <span
+                                            class="bg-blue-950 text-blue-300 px-1.5 py-0.5 rounded border border-blue-800">National EOC</span>
+                                    </div>
+                                    <h4 class="font-bold text-xs font-prompt text-white">National Disaster EOC Portal</h4>
+                                    <p class="text-[11px] text-slate-300 mt-1">ปภ. ส่วนกลาง – ศูนย์ ปภ. เขต – สนง.ปภ.จังหวัด</p>
+                                    <ul class="mt-2 space-y-1 text-[10px] text-slate-400">
+                                        <li>• บัญชาการผ่าน Multi-Hazard Map & Incident Management ครบวงจร</li>
+                                        <li>• ติดตามพิกัดเครื่องจักรกล-กำลังพลเรียลไทม์ และถอดบทเรียน (AAR)</li>
+                                    </ul>
+                                </div>
+                                <div class="mt-3 pt-2 border-t border-slate-800 text-[10px] text-emerald-300 font-mono">
+                                    สถานะ: Single Operational Platform
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Quantitative Impact Bar -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-xs font-prompt">
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-2.5">
+                            <span class="text-[11px] text-slate-500 block">การเชื่อมโยงและแลกเปลี่ยนข้อมูล</span>
+                            <span class="text-base font-extrabold text-brand-bluePrimary">Real-Time Streaming 100%</span>
+                        </div>
+                        <div class="bg-orange-50 border border-orange-200 rounded-xl p-2.5">
+                            <span class="text-[11px] text-slate-500 block">สถานีตรวจวัดอัจฉริยะติดตั้งเพิ่ม</span>
+                            <span class="text-base font-extrabold text-brand-orange">IoT Smart Sensor 130 จุด</span>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5">
+                            <span class="text-[11px] text-slate-500 block">เอกภาพการบังคับบัญชาและทรัพยากร</span>
+                            <span class="text-base font-extrabold text-emerald-700">ส่วนกลาง – เขต – จังหวัด</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-2.5 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span>แผนขับเคลื่อนระบบสาธารณภัยดิจิทัลแห่งชาติสู่ความยั่งยืน</span>
+                    <span>National Digital Twin Roadmap</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 12: CONCLUSION & SUMMARY -->
+            <div id="slide-12"
+                class="slide-element hidden w-full max-w-5xl bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden slide-canvas flex flex-col justify-between border border-slate-200">
+                <div
+                    class="bg-gradient-to-r from-brand-blueNavy via-brand-blueDark to-slate-900 px-8 py-4 text-white flex justify-between items-center">
+                    <span class="text-xs font-prompt font-semibold text-orange-400">บทสรุปและวิสัยทัศน์ • Building
+                        Resilient Thailand</span>
+                    <span class="text-xs font-mono bg-white/10 px-2.5 py-1 rounded">SLIDE 12 / 12</span>
+                </div>
+
+                <div class="px-8 sm:px-12 py-8 flex-1 flex flex-col justify-center">
+                    <h3 class="text-2xl sm:text-3xl font-extrabold font-prompt text-brand-blueNavy mb-2">
+                        ประเทศไทยพร้อมรับมือทุกวิกฤต (Resilient Thailand)
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mb-6 font-sarabun max-w-3xl">
+                        บูรณาการเทคโนโลยีดิจิทัลไร้รอยต่อตลอดวงจรภัยพิบัติ 4 ระยะ เพื่อเป้าหมายสูงสุดประการเดียว:
+                        ความปลอดภัยและคุณภาพชีวิตที่ดีของคนไทย
+                    </p>
+
+                    <!-- 3 Ring Summary -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-blue-50 border-2 border-brand-bluePrimary rounded-xl p-4 text-center">
+                            <span class="text-3xl mb-1 block">🔮</span>
+                            <span class="font-bold text-xs font-prompt text-brand-bluePrimary uppercase block">1.
+                                PREDICT & SIMULATE</span>
+                            <h4 class="font-bold text-sm text-brand-blueNavy mt-1">คาดการณ์และจำลองแม่นยำ</h4>
+                            <p class="text-[11px] text-slate-600 mt-1">Disaster Data Hub (IoT 130 จุด) + Digital Twin 3D & AI (LSTM) จำลองน้ำท่วม-ดินถล่มหลายฉากทัศน์</p>
+                        </div>
+
+                        <div class="bg-orange-50 border-2 border-brand-orange rounded-xl p-4 text-center">
+                            <span class="text-3xl mb-1 block">🛡️</span>
+                            <span class="font-bold text-xs font-prompt text-brand-orange uppercase block">2.
+                                PROTECT & COMMAND</span>
+                            <h4 class="font-bold text-sm text-brand-blueNavy mt-1">เผชิญเหตุและคุ้มครองทันท่วงที</h4>
+                            <p class="text-[11px] text-slate-600 mt-1">แผนเผชิญเหตุดิจิทัล + National EOC Portal + shelter.disaster.go.th ดูแลประชาชนครบวงจร</p>
+                        </div>
+
+                        <div class="bg-emerald-50 border-2 border-emerald-600 rounded-xl p-4 text-center">
+                            <span class="text-3xl mb-1 block">⚡</span>
+                            <span class="font-bold text-xs font-prompt text-emerald-800 uppercase block">3.
+                                RECOVER & IMPROVE</span>
+                            <h4 class="font-bold text-sm text-brand-blueNavy mt-1">เยียวยาฉับไว & ถอดบทเรียน</h4>
+                            <p class="text-[11px] text-slate-600 mt-1">relief.disaster x ทางรัฐ x Linkage โอนตรงพร้อมเพย์ พร้อมถอดบทเรียน (AAR) พัฒนาโมเดลต่อเนื่อง</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-50 border-t border-slate-100 px-8 py-4 flex justify-between items-center text-xs text-slate-500 font-prompt">
+                    <span class="font-bold text-brand-blueNavy">ขอขอบคุณ • กรมป้องกันและบรรเทาสาธารณภัย (ปภ.)
+                        กระทรวงมหาดไทย</span>
+                    <span class="text-brand-orange font-bold">Q & A Session</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- SPEAKER NOTES DRAWER (MODAL / TOGGLEABLE)                      -->
+        <!-- ============================================================== -->
+        <div id="speaker-notes-panel"
+            class="hidden w-full max-w-5xl mt-4 bg-slate-900 border border-slate-700 rounded-xl p-4 text-xs font-sarabun text-slate-300 shadow-xl no-print">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2 font-prompt">
+                <span class="text-brand-orange font-bold flex items-center gap-1.5">
+                    🎙️ โน้ตผู้บรรยาย (Speaker Talking Points สำหรับสไลด์นี้)
+                </span>
+                <span class="text-[10px] text-slate-400">กดปุ่ม N หรือคลิกปุ่มเพื่อซ่อน/แสดง</span>
+            </div>
+            <p id="speaker-note-text" class="leading-relaxed text-slate-200">
+                ยินดีต้อนรับผู้บริหารและแขกผู้มีเกียรติทุกท่าน
+                สไลด์นี้เป็นการเปิดภาพรวมการยกระดับการจัดการสาธารณภัยไทยด้วย 3 เสาหลัก: ศูนย์พักพิง, การเยียวยา มติ ครม.
+                ไร้รอยต่อ, และก้าวต่อไปสู่อนาคตด้วย Disaster Data Hub & Digital Twin
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Footer Status Bar -->
+    <footer
+        class="bg-slate-900/60 border-t border-slate-800/80 py-2.5 px-4 text-center text-[11px] text-slate-400 font-prompt no-print">
+        <span>คีย์ลัด: ใช้ปุ่ม ⬅️ / ➡️ หรือ Spacebar เพื่อเลื่อนสไลด์ | ปุ่ม F เต็มหน้าจอ | ปุ่ม N โน้ตผู้บรรยาย | ปภ.
+            Digital Disaster Slides</span>
+    </footer>
+
+    <!-- Interactive Slideshow Controller JavaScript -->
+    <script>
+        const totalSlides = 12;
+        let currentSlide = 1;
+        let isGridMode = false;
+
+        const speakerNotes = {
+            1: "ยินดีต้อนรับผู้บริหารและแขกผู้มีเกียรติทุกท่าน สไลด์นี้เป็นการเปิดภาพรวมการยกระดับการจัดการสาธารณภัยไทยด้วย 3 เสาหลัก: ศูนย์พักพิง (shelter.disaster.go.th), การเยียวยา มติ ครม. ผ่านระบบออนไลน์ (relief.disaster.go.th), และการยกระดับด้วยระบบบูรณาการข้อมูลภัยพิบัติ (Disaster Data Hub) และระบบคู่เสมือนจริง (Digital Twin)",
+            2: "เน้นย้ำความเจ็บปวดในอดีต (Pain Points) ที่ประชาชนต้องต่อแถวยื่นกระดาษ และรอเงินเยียวยา 45-90 วัน ชี้ให้เห็นว่าระบบดิจิทัลเข้ามาแก้ไขปัญหาเหล่านี้ได้อย่างไร",
+            3: "อธิบาย shelter.disaster.go.th: นำเสนอจุดเด่นของแผนที่ GIS, ความจุคงเหลือที่อัปเดตแบบเรียลไทม์, และการคัดกรองกลุ่มเปราะบางเพื่อส่งทีมแพทย์เข้าดูแล",
+            4: "อธิบาย relief.disaster.go.th: การจ่ายเงินเยียวยาตามมติ ครม. ผ่านระบบออนไลน์ ครัวเรือนละ 9,000 บาท เชื่อมโยงแอปทางรัฐ, Linkage Center กรมการปกครอง และส่งต่อธนาคารออมสินโอนเข้าพร้อมเพย์",
+            5: "ผัง Data Flow: อธิบายการไหลของข้อมูล 5 ขั้นตอน เน้นย้ำเรื่องความมั่นคงปลอดภัย (Digital ID IAL 2.3+) และการยกเลิกสำเนากระดาษ 100%",
+            6: "ตารางเปรียบเทียบ Before vs After: เน้นตัวเลขลดเวลารอคอยเงินเยียวยาจาก 45-90 วัน เหลือเพียงไม่กี่วันทำการ และการขจัดปัญหาความซ้ำซ้อน",
+            7: "เริ่มต้นส่วน Digital Twin ของ ปภ.: ชี้ให้เห็นปัญหาและข้อจำกัดในปัจจุบัน 4 ด้าน (ข้อมูลและการบูรณาการ, การวิเคราะห์และคาดการณ์ที่ขาด 3D Geospatial Data, กระบวนการทำงานและแผนเผชิญเหตุที่เป็นกระดาษ, และข้อจำกัดด้านเทคโนโลยีเดิมที่ไร้ API/AI) เชื่อมโยงสู่กระบวนงานสำคัญตลอดวงจรภัยพิบัติ 4 ระยะ (ก่อนเกิดภัย, เตรียมความพร้อม, ตอบสนอง, และฟื้นฟูด้วย AAR)",
+            8: "เจาะลึก ระบบที่ 1: ระบบบูรณาการข้อมูลภัยพิบัติ (Disaster Data Hub System) ที่ยกระดับจากระบบเดิมใน 5 มิติหลัก ได้แก่ (1) เชื่อมโยงอัตโนมัติผ่าน API Gateway, Message Queue และ Data Streaming จากกรมอุตุฯ กรมทรัพยากรน้ำ กรมทรัพยากรธรณี (2) กำหนด Data Governance Framework & Disaster Data Standards (3) ยกระดับสู่คลังข้อมูลกลางเชิงพื้นที่ (Central Spatial Data Warehouse) เก็บ 3D Geospatial Data พร้อมติดตั้ง IoT Smart Sensor เพิ่มเติม 130 จุด (4) สถาปัตยกรรมฐานข้อมูลผสมผสาน Spatial Relational, Time-series, Object Storage และ Data Warehouse/Lake (5) คลังข้อมูลประวัติศาสตร์ภัยพิบัติ (Historical Data Repository) เป็น Training Data ให้ AI/AutoML และ Deep Learning (LSTM)",
+            9: "ช่วงรับชมวีดีทัศน์: ฉายวีดีทัศน์ชุดที่ 1 นำเสนอการทำงานของระบบคู่เสมือนจริง (Disaster Digital Twin) และการบริหารจัดการสาธารณภัยด้วยเทคโนโลยีดิจิทัลของ ปภ. การจำลองสถานการณ์เสมือนจริงเพื่อการตัดสินใจของผู้บริหารในสถานการณ์วิกฤต",
+            10: "สรุปสถาปัตยกรรมและกระบวนการทำงานของ 4 ระบบหลักภายใต้โครงการ Digital Twin: เริ่มจาก (S1) Disaster Data Hub & IoT Sensors 130 จุด ส่งข้อมูลเข้า (S2) Digital Twin Simulation System ประมวลผล 3D & AI (LSTM/AutoML) เชื่อมโยงกับ (S3) ระบบแผนเผชิญเหตุดิจิทัล (Digital Disaster Response Plan System) ที่ปรับแผนกระดาษสู่ Dynamic SOP และแสดงผลรวมศูนย์ที่ (S4) National Disaster EOC Portal เชื่อมโยง ปภ.ส่วนกลาง ศูนย์ ปภ.เขต และ สนง.ปภ.จังหวัด บน Single Operational Platform พร้อมระบบ Incident Management และ Resource & Asset Management เรียลไทม์",
+            11: "นำเสนอแผนการขับเคลื่อนยุทธศาสตร์ Digital Twin & National EOC สู่ระดับชาติ 3 ระยะ ตั้งแต่การวางรากฐาน Data Hub และเซนเซอร์ 130 จุด สู่การจำลอง 3D & แผนดิจิทัล และการสั่งการรวมศูนย์ผ่าน National Disaster EOC Portal",
+            12: "บทสรุป: ขมวดภาพรวม Predict & Simulate (Data Hub + Digital Twin 3D) -> Protect & Command (แผนเผชิญเหตุดิจิทัล + National EOC + ศูนย์พักพิง) -> Recover & Improve (ระบบเยียวยาออนไลน์ + การถอดบทเรียน AAR) พร้อมเปิดรับคำถามจากผู้ฟัง (Q&A)"
+        };
+
+        function showSlide(slideNum) {
+            if (isGridMode) toggleGridMode(); // exit grid if navigating
+            currentSlide = Math.max(1, Math.min(totalSlides, slideNum));
+
+            // Pause video if navigating away from slide 9
+            const videoEl = document.getElementById('slide-video-1');
+            if (videoEl && currentSlide !== 9 && !videoEl.paused) {
+                videoEl.pause();
+            }
+
+            // Hide all slides
+            for (let i = 1; i <= totalSlides; i++) {
+                const el = document.getElementById('slide-' + i);
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('block');
+                }
+            }
+
+            // Show active slide
+            const activeEl = document.getElementById('slide-' + currentSlide);
+            if (activeEl) {
+                activeEl.classList.remove('hidden');
+                activeEl.classList.add('block');
+            }
+
+            // Update UI Counters
+            document.getElementById('current-slide-num').innerText = currentSlide;
+            const fsSlide = document.getElementById('fs-slide-num');
+            if (fsSlide) fsSlide.innerText = currentSlide;
+            const progress = (currentSlide / totalSlides) * 100;
+            document.getElementById('presentation-progress').style.width = progress + '%';
+
+            // Update Speaker Notes
+            document.getElementById('speaker-note-text').innerText = speakerNotes[currentSlide] || "ไม่มีโน้ตสำหรับสไลด์นี้";
+
+            // Update Fullscreen Scale if active
+            updateSlideScale();
+        }
+
+        let customScaleFactor = 1.0;
+
+        function updateSlideScale() {
+            const isFS = document.body.classList.contains('is-fullscreen') || !!(document.fullscreenElement || document.webkitFullscreenElement);
+            
+            if (isFS && !isGridMode) {
+                // Base reference dimensions for 16:9 presentation canvas
+                const baseWidth = 1060;
+                const baseHeight = 596;
+
+                const scaleX = window.innerWidth / baseWidth;
+                const scaleY = window.innerHeight / baseHeight;
+                // Proportional scale factor to fill screen and enlarge fonts
+                const autoScale = Math.min(scaleX, scaleY);
+                const finalScale = autoScale * customScaleFactor;
+
+                document.querySelectorAll('.slide-element').forEach(slide => {
+                    slide.style.width = baseWidth + 'px';
+                    slide.style.minWidth = baseWidth + 'px';
+                    slide.style.maxWidth = baseWidth + 'px';
+                    slide.style.height = baseHeight + 'px';
+                    slide.style.minHeight = baseHeight + 'px';
+                    slide.style.maxHeight = baseHeight + 'px';
+                    slide.style.transform = `scale(${finalScale})`;
+                    slide.style.transformOrigin = 'center center';
+                    slide.style.boxShadow = '0 25px 60px -15px rgba(0, 0, 0, 0.95)';
+                    slide.style.borderRadius = '12px';
+                    slide.style.margin = 'auto';
+                });
+            } else {
+                document.querySelectorAll('.slide-element').forEach(slide => {
+                    slide.style.width = '';
+                    slide.style.minWidth = '';
+                    slide.style.maxWidth = '';
+                    slide.style.height = '';
+                    slide.style.minHeight = '';
+                    slide.style.maxHeight = '';
+                    slide.style.transform = '';
+                    slide.style.transformOrigin = '';
+                    slide.style.boxShadow = '';
+                    slide.style.borderRadius = '';
+                    slide.style.margin = '';
+                });
+            }
+        }
+
+        function changeSlideScale(delta) {
+            customScaleFactor = Math.max(0.7, Math.min(1.4, customScaleFactor + delta));
+            updateSlideScale();
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function toggleNotes() {
+            const panel = document.getElementById('speaker-notes-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function toggleGridMode() {
+            const viewport = document.getElementById('slides-viewport');
+            const allSlides = document.querySelectorAll('.slide-element');
+            isGridMode = !isGridMode;
+
+            if (isGridMode) {
+                viewport.className = "w-full grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[85vh] p-2";
+                allSlides.forEach((slide, idx) => {
+                    slide.classList.remove('hidden');
+                    slide.classList.add('block');
+                    slide.style.cursor = 'pointer';
+                    slide.onclick = () => {
+                        isGridMode = false;
+                        showSlide(idx + 1);
+                    };
+                });
+                document.getElementById('btn-grid').classList.add('bg-brand-orange', 'text-white');
+            } else {
+                viewport.className = "w-full flex justify-center items-center";
+                allSlides.forEach(slide => {
+                    slide.style.cursor = 'default';
+                    slide.onclick = null;
+                });
+                document.getElementById('btn-grid').classList.remove('bg-brand-orange', 'text-white');
+                showSlide(currentSlide);
+            }
+        }
+
+        function toggleFullscreen() {
+            const isAlreadyFS = !!(document.fullscreenElement || document.webkitFullscreenElement || document.body.classList.contains('is-fullscreen'));
+
+            if (!isAlreadyFS) {
+                // Enter fullscreen
+                const docEl = document.documentElement;
+                if (docEl.requestFullscreen) {
+                    docEl.requestFullscreen().then(() => {
+                        document.body.classList.add('is-fullscreen');
+                        updateSlideScale();
+                    }).catch(err => {
+                        document.body.classList.add('is-fullscreen');
+                        updateSlideScale();
+                    });
+                } else if (docEl.webkitRequestFullscreen) {
+                    docEl.webkitRequestFullscreen();
+                    document.body.classList.add('is-fullscreen');
+                    updateSlideScale();
+                } else {
+                    document.body.classList.add('is-fullscreen');
+                    updateSlideScale();
+                }
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().catch(err => { });
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+                document.body.classList.remove('is-fullscreen');
+                updateSlideScale();
+            }
+        }
+
+        // Fullscreen state listener (Native Browser Event)
+        ['fullscreenchange', 'webkitfullscreenchange'].forEach(evt => {
+            document.addEventListener(evt, () => {
+                if (document.fullscreenElement || document.webkitFullscreenElement) {
+                    document.body.classList.add('is-fullscreen');
+                } else {
+                    document.body.classList.remove('is-fullscreen');
+                }
+                updateSlideScale();
+            });
+        });
+
+        // Window resize listener to keep proportional scale
+        window.addEventListener('resize', () => {
+            updateSlideScale();
+        });
+
+        // Auto-hiding HUD on mouse move in fullscreen
+        let hudTimer;
+        document.addEventListener('mousemove', () => {
+            const isFS = document.body.classList.contains('is-fullscreen') || !!(document.fullscreenElement || document.webkitFullscreenElement);
+            if (isFS) {
+                const hud = document.getElementById('fullscreen-hud');
+                if (hud) {
+                    hud.style.opacity = '0.92';
+                    clearTimeout(hudTimer);
+                    hudTimer = setTimeout(() => {
+                        hud.style.opacity = '0';
+                    }, 2500);
+                }
+            }
+        });
+
+        // Keyboard Navigation Support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            } else if (e.key === 'n' || e.key === 'N') {
+                toggleNotes();
+            } else if (e.key === 'g' || e.key === 'G') {
+                toggleGridMode();
+            } else if (e.key === 'Escape') {
+                document.body.classList.remove('is-fullscreen');
+                updateSlideScale();
+            } else if (e.key === '+' || e.key === '=') {
+                changeSlideScale(0.05);
+            } else if (e.key === '-' || e.key === '_') {
+                changeSlideScale(-0.05);
+            } else if (e.key === '0') {
+                customScaleFactor = 1.0;
+                updateSlideScale();
+            }
+        });
+
+        // Initialize First Slide
+        showSlide(1);
+    </script>
+</body>
+
+</html>
